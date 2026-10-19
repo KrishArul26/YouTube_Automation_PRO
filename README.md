@@ -23,6 +23,10 @@ Given a story idea (or an existing video to adapt), the pipeline:
 
 The current production use case is a Tamil-language channel retelling stories from Indian epics such as the Mahabharata.
 
+### 📺 See it in action
+
+The Shorts on **[Tamil Ithihasa Kathaigal](https://www.youtube.com/@tamilithihasakathaigal-b8o/shorts)** are produced end to end by this pipeline.
+
 ## 🧠 What Makes It Interesting
 
 - **Character consistency across scenes.** A dedicated character-extraction stage builds canonical descriptions (appearance, clothing, weapons) that are injected into every image prompt. This is the hardest problem in AI-generated video.
