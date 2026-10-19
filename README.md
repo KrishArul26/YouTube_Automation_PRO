@@ -27,6 +27,16 @@ The current production use case is a Tamil-language channel retelling stories fr
 
 The Shorts on **[Tamil Ithihasa Kathaigal](https://www.youtube.com/@tamilithihasakathaigal-b8o/shorts)** are produced end to end by this pipeline.
 
+**▶️ To watch the videos, [click here](https://www.youtube.com/@tamilithihasakathaigal-b8o/shorts).**
+
+<p align="center">
+  <a href="https://www.youtube.com/@tamilithihasakathaigal-b8o/shorts">
+    <img src="docs/media/youtube-shorts-sample.gif" width="260" alt="Sample clips from a generated Short: AI-generated Mahabharata scenes with Tamil subtitles">
+  </a>
+  <br>
+  <em>Clips from one generated Short: scenes, characters, narration and Tamil subtitles all produced automatically.</em>
+</p>
+
 ## 🧠 What Makes It Interesting
 
 - **Character consistency across scenes.** A dedicated character-extraction stage builds canonical descriptions (appearance, clothing, weapons) that are injected into every image prompt. This is the hardest problem in AI-generated video.
