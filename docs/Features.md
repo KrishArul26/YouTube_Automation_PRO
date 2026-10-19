@@ -4,7 +4,7 @@
 
 | Stage | What it does |
 |---|---|
-| **StoryWriter** | Generates a story from an idea with an LLM, or reads ideas from a file for batch runs. Includes a validator that rejects incomplete or off-format stories. |
+| **StoryWriter** | Generates a story from an idea with an LLM, or reads ideas from a file for batch runs. A validator normalises JSON, tagged or plain-text stories into a structured format (hook → narrative → reveal → closing message) and rejects incomplete ones. |
 | **StoryTranslator** | Localises the story into one or more target languages in parallel (configurable worker count). |
 | **HookCreator** | Writes a short attention-grabbing opening, delivered as voice and/or on-screen text. |
 | **CTAManager** | Adds a call to action (e.g. subscribe prompt) at the right moment. |
@@ -14,8 +14,8 @@
 
 | Stage | What it does |
 |---|---|
-| **CharacterExtractor** | Identifies every character and builds a canonical blueprint: appearance, clothing, signature weapons or objects. |
-| **SceneBuilder** | Breaks the story into scenes with a visual description, camera framing and narration segment for each. |
+| **CharacterExtractor** | Finds every character with spaCy NER, a custom gazetteer and name normalisation, then runs the **agent chain** (Scholar Researcher → Vedic Iconographer → Cinematic Assembler → Validator → Rewriter) to build one canonical appearance, including signature weapons. |
+| **SceneBuilder** | Runs a global story analysis that maps aliases to characters (shared memory), then breaks the story into scenes with a visual description, camera framing and narration segment for each. |
 | **PromptCreator** | Combines scene descriptions with character blueprints and a theme style guide into image-generation prompts. |
 
 ## Media generation
@@ -32,7 +32,8 @@
 | Feature | Details |
 |---|---|
 | **Audio/video sync** | Clip lengths are fitted to the narration for each scene automatically. |
-| **Subtitles** | Word-grouped subtitles (configurable words per line) burned into the video. |
+| **Subtitles** | Driven by word-level timestamps from the narration. Grouped (configurable words per line) or word-by-word "kinetic" mode with highlight colours and fade/pop/move animations, burned in with full Tamil script support. |
+| **Quality gate** | Every generated clip is checked for blur at sampled frames; failing clips are rejected before composition. |
 | **Branding** | Logo overlay with position, size, margin and opacity settings, plus an animated subscribe outro. |
 | **Transitions** | 11 transition types with history tracking so consecutive videos don't repeat the same effect. |
 | **Platform presets** | YouTube Shorts (1080×1920, up to 180 s), Instagram Reels, TikTok and Facebook Reels, each with its own resolution, FPS and duration limits. |

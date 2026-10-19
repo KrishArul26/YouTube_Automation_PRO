@@ -12,10 +12,11 @@
  └─────────────────┘   └──────────────────┘   └───────────────────┘
           │
           ▼
- ┌─────────────────────┐   ┌──────────────┐   ┌───────────────┐
- │ CharacterExtractor  │──▶│ SceneBuilder │──▶│ PromptCreator │
- │ (canonical looks)   │   │ (shot list)  │   │ (image prompts)│
- └─────────────────────┘   └──────────────┘   └───────────────┘
+ ┌──────────────────────┐   ┌──────────────┐   ┌────────────────┐
+ │ CharacterExtractor   │──▶│ SceneBuilder │──▶│ PromptCreator  │
+ │ (agent chain: canon- │   │ (global story│   │ (image prompts │
+ │  ical looks)         │   │  memory)     │   │  + characters) │
+ └──────────────────────┘   └──────────────┘   └────────────────┘
           │
           ▼
  ┌────────────────┐   ┌────────────────┐   ┌────────────────┐
@@ -53,11 +54,19 @@ Every video gets its own directory holding the story, scenes, prompts, images, c
 ### 5. Background job queue
 Video generation and composition are the slowest steps. They are queued as background jobs, so the pipeline can start writing the next story while clips render. A batch runner processes a list of story ideas end to end.
 
+### 6. Agents for judgement-heavy steps
+Steps that need judgement use **chains of specialised agents** instead of one large prompt. Character design is the main example: researcher → iconographer → assembler → validator → rewriter (see [Agentic Character Design](Agentic_Character_Design.md)). Each agent returns structured JSON, so the next agent and the pipeline code can check its output.
+
+### 7. Shared story memory
+Before scenes are built, a global story analysis maps every character alias and form to a single identity. This memory is shared by all later stages, so scene prompts, character profiles and image prompts always refer to the same person.
+
 ## Reliability
 
 - **Retries with exponential backoff** on every external call, with configurable `max_retries` and `retry_delay`
 - **LLM fallback chain:** if the primary model fails, the request is retried on an OpenAI-compatible endpoint
 - **Validation steps:** story validation and checksum validation catch truncated or malformed outputs before they flow downstream
+- **Visual quality gate:** generated clips are sampled at several points (10 %, 30 %, 50 %, 70 %, 90 %) and checked for blur with frame differencing or OpenCV Laplacian variance. Blurry clips are rejected.
+- **Timestamped narration:** TTS is requested with character-level timestamps, and a speech-to-text fallback recovers timing if needed, so subtitles align to the spoken words
 - **Prompt logging:** every prompt and response is logged for debugging and prompt iteration
 
 ## Rendering performance
